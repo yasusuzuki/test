@@ -1,18 +1,18 @@
-package lamda;
+ï»¿package lamda;
 
 import java.util.function.Consumer;
 
 import lamda.reflectiontarget.SearchAbstract;
 
 public class LamdaFactory {
-	//ƒ‰ƒ€ƒ_‚©‚çƒNƒ‰ƒX•Ï”‚ÉƒAƒNƒZƒX‚Å‚«‚éB
+	//ãƒ©ãƒ ãƒ€ã‹ã‚‰ã‚¯ãƒ©ã‚¹å¤‰æ•°ã«ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹ã€‚
 	private static String class_instance_var = "AA";
 	
-	//ƒAƒvƒŠ‰Šú‰»‚É‚·‚×‚Äƒ‰ƒ€ƒ_‚ğì¬E“o˜^‚ğ‚µ‚ÄAÀs‚ÍŒã‚ÅB
+	//ã‚¢ãƒ—ãƒªåˆæœŸåŒ–æ™‚ã«ã™ã¹ã¦ãƒ©ãƒ ãƒ€ã‚’ä½œæˆãƒ»ç™»éŒ²ã‚’ã—ã¦ã€å®Ÿè¡Œã¯å¾Œã§ã€‚
 	public static <T extends SearchAbstract> Runnable createLamda(Class<T> searchClass) {
-		int out_lamda = 100; // ƒ[ƒJƒ‹•Ï”‚àƒ‰ƒ€ƒ_‚ÅQÆ‰Â”\
-		//Runnable‚ÍƒXƒŒƒbƒh‚ğì‚é‚Æ‚«‚Æ“¯‚¶‚¾‚ªAnew Thread(Runnable runner)‚ğ‚µ‚È‚¢‚Ì‚Å
-		//V‚µ‚¢ƒXƒŒƒbƒh‚Íì¬‚³‚ê‚È‚¢
+		int out_lamda = 100; // ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚‚ãƒ©ãƒ ãƒ€ã§å‚ç…§å¯èƒ½
+		//Runnableã¯ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’ä½œã‚‹ã¨ãã¨åŒã˜ã ãŒã€new Thread(Runnable runner)ã‚’ã—ãªã„ã®ã§
+		//æ–°ã—ã„ã‚¹ãƒ¬ãƒƒãƒ‰ã¯ä½œæˆã•ã‚Œãªã„
 		Runnable runner = () ->{
 			int in_lamda = out_lamda;
 			T instance = null;
@@ -25,15 +25,15 @@ public class LamdaFactory {
 				e.printStackTrace();
 				System.exit(1);
 			}
-			//‘Oˆ—
+			//å‰å‡¦ç†
 			
-			//Às
+			//å®Ÿè¡Œ
 			instance.execute();
 			
-			//Œãˆ—
+			//å¾Œå‡¦ç†
 			
-			//ƒ‰ƒ€ƒ_ŠO‚Å’è‹`‚³‚ê‚½•Ï”‚ÍQÆ‚Í‚Å‚«‚é‚ªA•ÏX‚Í‚Å‚«‚È‚¢Bfinal‚Æ“¯‚¶ˆµ‚¢
-			//‚½‚¾‚µAƒ‰ƒ€ƒ_“à‚Å’è‹`‚³‚ê‚½•Ï”‚ÉƒRƒs[‚·‚ê‚Î“–‘R•ÏX‚ª‚Å‚«‚éB
+			//ãƒ©ãƒ ãƒ€å¤–ã§å®šç¾©ã•ã‚ŒãŸå¤‰æ•°ã¯å‚ç…§ã¯ã§ãã‚‹ãŒã€å¤‰æ›´ã¯ã§ããªã„ã€‚finalã¨åŒã˜æ‰±ã„
+			//ãŸã ã—ã€ãƒ©ãƒ ãƒ€å†…ã§å®šç¾©ã•ã‚ŒãŸå¤‰æ•°ã«ã‚³ãƒ”ãƒ¼ã™ã‚Œã°å½“ç„¶å¤‰æ›´ãŒã§ãã‚‹ã€‚
 			System.out.println("Instance = " + instance);
 			System.out.println("In Lamda = " + ++in_lamda);
 			System.out.println("Out Lamda =  " + out_lamda);

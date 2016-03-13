@@ -1,14 +1,14 @@
-package utf8;
+ï»¿package utf8;
 
-public class “ú–{Œê–½–¼ {
-	private String ƒeƒXƒg•¶š—ñ = "ƒeƒXƒg•¶š—ñ";
+public class æ—¥æœ¬èªå‘½å {
+	private String ãƒ†ã‚¹ãƒˆæ–‡å­—åˆ— = "ãƒ†ã‚¹ãƒˆæ–‡å­—åˆ—";
 	
-	public void ƒeƒXƒg•¶š—ñ‚Ì•\¦(){
-		System.out.println(ƒeƒXƒg•¶š—ñ);
+	public void ãƒ†ã‚¹ãƒˆæ–‡å­—åˆ—ã®è¡¨ç¤º(){
+		System.out.println(ãƒ†ã‚¹ãƒˆæ–‡å­—åˆ—);
 		
 	}
 	
 	public static void main(String[] args){
-		new JapaneseNaming().ƒeƒXƒg•¶š—ñ‚Ì•\¦();
+		new JapaneseNaming().ãƒ†ã‚¹ãƒˆæ–‡å­—åˆ—ã®è¡¨ç¤º();
 	}
 }

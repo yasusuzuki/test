@@ -1,26 +1,26 @@
-package reflection;
+﻿package reflection;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 /*
   
-TODO: �������̎g�p�ʂɂ��Ă̌v�����Ȃ�
-TODO: DB�⃋�[���ւ̃A�N�Z�X�ɑ΂����r��A�����񑀍�ȊO�̉��Z�ɑ΂����r���~����
-TODO: Java7���瓱�����ꂽMethodHandle��Lamda���g���ƍ����ɓ����炵�������������
+TODO: メモリの使用量についての計測がない
+TODO: DBやルールへのアクセスに対する比較や、文字列操作以外の演算に対する比較も欲しい
+TODO: Java7から導入されたMethodHandleやLamdaを使うと高速に動くらしいがそれを試す
 
- ============= �����_�̌��_ ===============
- �|3������x�̃A�N�Z�X�Ȃ烊�t���N�V�����ƒ��ڌďo���̍���2ms���x�Ȃ̂ŁA�I�����C���A�v���Ȃ���Ȃ��B�o�b�`�͂���������������K�v�����邩������Ȃ��B
- �@�@�|�@���ڌďo����3����̃Q�b�^�[�Z�b�^�[�Ŗ�1ms���x(�������A�Ӑ}���Ȃ��œK����h�����߂�switch���̕��ׂ��������Ă��܂��Ă���B
-�@�@�@�@�@switch�������œ����Q�b�^�[�Z�b�^�[��3����A�N�Z�X����󋵂ł�1ms���x�������̂ŁAswitch���ɂ�镉�ׂ͖������Ă悢�ƍl����)
-�@�@�|�@���t���N�V�����Ăяo���ɂ��������@������Ȃ��ōł����\���ǂ����@�ł��A3ms���x
-�@�@�|�@�܂�A���t���N�V�����͒��ڌďo���ɔ�ׂ�3�{�x���B�������A3����Ăяo����2ms�̍��ł���B
+ ============= 現時点の結論 ===============
+ －3万回程度のアクセスならリフレクションと直接呼出しの差は2ms程度なので、オンラインアプリなら問題ない。バッチはもう少し検討する必要があるかもしれない。
+ 　　－　直接呼出しは3万回のゲッターセッターで約1ms程度(ただし、意図しない最適化を防ぐためのswitch分の負荷が混じってしまっている。
+　　　　　switch文無しで同じゲッターセッターを3万回アクセスする状況でも1ms程度だったので、switch分による負荷は無視してよいと考える)
+　　－　リフレクション呼び出しにいくつか方法があるなかで最も性能が良い方法でも、3ms程度
+　　－　つまり、リフレクションは直接呼出しに比べて3倍遅い。ただし、3万回呼び出しで2msの差である。
 
- �|�@���t���N�V�����ɂ��Q�Ƃ��g�������\�b�h�̌Ăяo����t�B�[���h�ւ̃A�N�Z�X��������A���̎Q�Ƃ��擾���镉�S��1.5~9�{���x������
- �@�@�܂�A���\�b�h��t�B�[���h�ւ̎Q�Ƃ����炩���ߎ擾���ăL���b�V�����Ă����ƁA���t���N�V�����̐��\�𒘂������コ���邱�Ƃ��ł���
- �|�@���t���N�V�����ɂ����āA���\�b�h��t�B�[���h�ւ̎Q�Ƃ��擾����̂̓t�B�[���h�̕����������A�Q�Ƃ��g���Ď��ۂɃ��\�b�h���Ăяo������
- �@�@�t�B�[���h�ɃA�N�Z�X����̂� ���\�b�h�̂ق��������B�ΏƓI�ɁA���ڌĂяo���ł́A�Q�b�^�[�Z�b�^�[���g�킸���ڃt�B�[���h�ɃA�N�Z�X�����ق��������B�A
- �@�@�������A���̍���3����A�N�Z�X��2ms���x�Ȃ̂ŁA�債�����ł͂Ȃ��B
+ －　リフレクションによる参照を使ったメソッドの呼び出しやフィールドへのアクセスするよりも、その参照を取得する負担が1.5~9倍程度かかる
+ 　　つまり、メソッドやフィールドへの参照をあらかじめ取得してキャッシュしておくと、リフレクションの性能を著しく向上させることができる
+ －　リフレクションにおいて、メソッドやフィールドへの参照を取得するのはフィールドの方が速いが、参照を使って実際にメソッドを呼び出したり
+ 　　フィールドにアクセスするのは メソッドのほうが速い。対照的に、直接呼び出しでは、ゲッターセッターを使わず直接フィールドにアクセスしたほうが速い。、
+ 　　ただし、その差は3万回アクセスで2ms程度なので、大した差ではない。
  */
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -44,10 +44,10 @@ public class ReflectionBenchMark {
     {
     	try{
 		for (int i = 0; i < RUNS; i++) {
-			//�C���X�^���X�͂��炩���ߍ쐬���Ă���
+			//インスタンスはあらかじめ作成しておく
 			as[i] = A.class.newInstance();
 			bs[i] = B.class.newInstance();
-			//Method�ւ̎Q�Ƃ����炩���ߍ쐬���Ă���;
+			//Methodへの参照をあらかじめ作成しておく;
 			getters[i] = A.class.getMethod("getF" + String.format("%02d", i%30+1),new Class<?>[]{});
 			setters[i] = B.class.getMethod("setF" + String.format("%02d", i%30+1),String.class);
 			//mh_getters[i] = MethodHandles.publicLookup().findVirtual(A.class,"getF"+ String.format("%02d", i%30+1),MethodType.methodType(String.class));
@@ -73,20 +73,20 @@ public class ReflectionBenchMark {
 		
 		for (int i=1; i <= 50; i++) {
 			System.out.printf("*** ROUND %2d ***\n",i);
-			//���t���N�V��������
+			//リフレクション無し
 			ap.doRegular( i );
-			//�Q�b�^�[�Z�b�^�[�ւ�Method�̃��t���N�V�����g�p�B������Method�̃C���X�^���X�͓s�x�쐬
+			//ゲッターセッターへのMethodのリフレクション使用。ただしMethodのインスタンスは都度作成
 			ap.doReflectionMethodWithoutReferenceOptimized( i );
-			//Field�̃��t���N�V�����g�p�B������Field�̃C���X�^���X�͓s�x�쐬			
+			//Fieldのリフレクション使用。ただしFieldのインスタンスは都度作成			
 			ap.doReflectionFieldWithouReferenceOptimized( i );
-			//�Q�b�^�[�Z�b�^�[�ւ�Method�̃��t���N�V�����g�p�BMethod�̃C���X�^���X�͂��炩���ߍ쐬
+			//ゲッターセッターへのMethodのリフレクション使用。Methodのインスタンスはあらかじめ作成
 			ap.doReflectionMethodWithReferenceOptimized( i );
-			//Field�̃��t���N�V�����g�p�BField�̃C���X�^���X�͂��炩���ߍ쐬
+			//Fieldのリフレクション使用。Fieldのインスタンスはあらかじめ作成
 			ap.doReflectionFieldWithReferenceOptimized( i );
-			//Field�̃��t���N�V�����g�p�BField�̃C���X�^���X�͂��炩���ߍ쐬�B
-			//����ɁA������A���̕��ׂƃ��t���N�V�����̕s���ׂ邽�߂ɁA�C�ӂ������𖈉�A�����Ă���Z�b�^�[���Ă�
+			//Fieldのリフレクション使用。Fieldのインスタンスはあらかじめ作成。
+			//さらに、文字列連結の負荷とリフレクションの不可を比べるために、任意も文字を毎回連結してからセッターを呼ぶ
 			ap.doStringConcatAsBenchMark( i );
-			//(�z��͂��Ă��Ȃ���)���t���N�V�����ɂ��C���X�^���X���̕��ׂ��v������
+			//(想定はしていないが)リフレクションによるインスタンス化の負荷を計測する
 			ap.doNewInstanceWithReflectionAsBenchMark(i);
 			//System.gc();
 			ap.doMethodHandleWithReferenceOptimized(i);
@@ -99,7 +99,7 @@ public class ReflectionBenchMark {
 		
 		long start = System.nanoTime();
 		for (int i = 0; i < RUNS; i++) {
-			//bs[i].setF01( as[i].getF01() ); //Swtich���̕��ו����擾���邽�߂̖��ߕ�
+			//bs[i].setF01( as[i].getF01() ); //Swtich文の負荷分を取得するための命令文
 
 			switch (i%30+1) {
 			case 1:
@@ -198,7 +198,7 @@ public class ReflectionBenchMark {
 			}
 		}
 
-		System.out.printf("%2d %-30s\t%,20d ns%n",round,"���ڌďo",  (System.nanoTime() - start) );
+		System.out.printf("%2d %-30s\t%,20d ns%n",round,"直接呼出",  (System.nanoTime() - start) );
 	}
 
 	public  void doReflectionMethodWithoutReferenceOptimized(int round) throws Exception {
@@ -206,7 +206,7 @@ public class ReflectionBenchMark {
 		String[] setterNames = new String[RUNS];
 		
 		for (int i = 0; i < RUNS; i++) {
-			//Method���͍쐬���Ă������AMethod�ւ̎Q�Ƃ����炩���ߍ쐬���Ă����Ȃ�
+			//Method名は作成しておくが、Methodへの参照をあらかじめ作成しておかない
 			getterNames[i] = "getF" + String.format("%02d", i%30+1);
 			setterNames[i] = "setF" + String.format("%02d", i%30+1);
 		}
@@ -217,7 +217,7 @@ public class ReflectionBenchMark {
 			String val = (String) getter.invoke(as[i], new Object[]{});
 			setter.invoke(bs[i], val );
 		}
-		System.out.printf("%2d %-30s\t%,20d ns%n",round,"���t���N�V�������\�b�h���O�Q�Ǝ擾�E��",(System.nanoTime() - start) );
+		System.out.printf("%2d %-30s\t%,20d ns%n",round,"リフレクションメソッド事前参照取得・無",(System.nanoTime() - start) );
 	}
 
 	public  void doReflectionMethodWithReferenceOptimized(int round) throws Exception {
@@ -227,7 +227,7 @@ public class ReflectionBenchMark {
 			String val = (String) getters[i].invoke(as[i], new Object[]{});
 			setters[i].invoke(bs[i], val );
 		}
- 		System.out.printf("%2d %-30s\t%,20d ns%n",round,"���t���N�V�������\�b�h���O�Q�Ǝ擾�E�L",(System.nanoTime() - start) );
+ 		System.out.printf("%2d %-30s\t%,20d ns%n",round,"リフレクションメソッド事前参照取得・有",(System.nanoTime() - start) );
 	}
 	
 	public  void doReflectionFieldWithouReferenceOptimized(int round) throws Exception {
@@ -244,7 +244,7 @@ public class ReflectionBenchMark {
 			String val = (String) sourceFields[i].get(as[i]);
 			destinationFields[i].set(bs[i], val);
 		}
- 		System.out.printf("%2d %-30s\t%,20d ns%n",round,"���t���N�V�����t�B�[���h���O�Q�Ǝ擾�E��",(System.nanoTime() - start) );
+ 		System.out.printf("%2d %-30s\t%,20d ns%n",round,"リフレクションフィールド事前参照取得・無",(System.nanoTime() - start) );
 	}
 	
 	
@@ -255,7 +255,7 @@ public class ReflectionBenchMark {
 			destinationFields[i].set(bs[i], val);
 		}
 		
-		System.out.printf("%2d %-30s\t%,20d ns%n",round, "���t���N�V�����t�B�[���h���O�Q�Ǝ擾�E�L", (System.nanoTime() - start) );
+		System.out.printf("%2d %-30s\t%,20d ns%n",round, "リフレクションフィールド事前参照取得・有", (System.nanoTime() - start) );
 	}
 	
 	
@@ -267,12 +267,12 @@ public class ReflectionBenchMark {
 		}
 		long start = System.nanoTime();
 		for (int i = 0; i < RUNS; i++) {
-			//������̑���ɑ΂���A���t���N�V�����̃I�[�o�[�w�b�h�𑪂邽�߂ɁA�C�ӂ̕�����A������
+			//文字列の操作に対する、リフレクションのオーバーヘッドを測るために、任意の文字を連結する
 			String val = (String) sourceFields[i].get(as[i]) + dummyString[i];
 			destinationFields[i].set(bs[i], val);
 		}
 		
-		System.out.printf("%2d %-30s\t%,20d ns%n",round, "���t���N�V�����t�B�[���h���O�Q�Ǝ擾�E�L�{�����A��", (System.nanoTime() - start) );
+		System.out.printf("%2d %-30s\t%,20d ns%n",round, "リフレクションフィールド事前参照取得・有＋文字連結", (System.nanoTime() - start) );
 	}
 	
 	public  void doNewInstanceWithReflectionAsBenchMark(int round) throws Exception {
@@ -286,7 +286,7 @@ public class ReflectionBenchMark {
 			destinationFields[i].set(bs[i], val);
 		}
 		
-		System.out.printf("%2d %-30s\t%,20d ns%n",round, "���t���N�V�����t�B�[���h���O�Q�Ǝ擾�E�L�{�����A���{�C���X�^���X����", (System.nanoTime() - start) );
+		System.out.printf("%2d %-30s\t%,20d ns%n",round, "リフレクションフィールド事前参照取得・有＋文字連結＋インスタンス生成", (System.nanoTime() - start) );
 	}
 	
 
@@ -305,11 +305,11 @@ public class ReflectionBenchMark {
 				e.printStackTrace();
 			}
 		}
- 		System.out.printf("%2d %-30s\t%,20d ns%n",round,"���\�b�h�n���h�����O�Q�Ǝ擾�E�L",(System.nanoTime() - start) );
+ 		System.out.printf("%2d %-30s\t%,20d ns%n",round,"メソッドハンドル事前参照取得・有",(System.nanoTime() - start) );
 	}
 	
 	
-	//MethodHandle���ł��œK���E������������@ final�B���I�ɌĂяo����ύX���邱�Ƃ��ł��Ȃ��̂ŁA����͋p��
+	//MethodHandleが最も最適化・高速化する方法 final。動的に呼び出しを変更することができないので、今回は却下
 	private static final MethodHandle mh_getter = createMethodHandle(A.class,"getF01",MethodType.methodType(String.class));
 	private static final MethodHandle mh_setter = createMethodHandle(B.class,"setF01",MethodType.methodType(void.class, String.class));
 	private static MethodHandle createMethodHandle(Class cls, String methodName, MethodType methodType ){

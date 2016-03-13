@@ -1,4 +1,4 @@
-package lamda;
+ï»¿package lamda;
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -24,23 +24,23 @@ public class LamdaTest {
 	@Before
 	public void init(){
 		Collections.addAll(meisai,
-		new Meisai("S01","ŠQ","01"),
-		new Meisai("S01","ŠQ","02"),
-		new Meisai("S01","ŠQ","03"));
+		new Meisai("S01","å‚·å®³","01"),
+		new Meisai("S01","å‚·å®³","02"),
+		new Meisai("S01","å‚·å®³","03"));
 
 		Collections.addAll(tanpo,
-		new Tanpo("S01","ŠQ","01","€–S"),
-		new Tanpo("S01","ŠQ","02","€–S"),
-		new Tanpo("S01","ŠQ","02","Œãˆâ"),
-		new Tanpo("S01","ŠQ","03","€–S"),
-		new Tanpo("S01","ŠQ","03","Œãˆâ"));
+		new Tanpo("S01","å‚·å®³","01","æ­»äº¡"),
+		new Tanpo("S01","å‚·å®³","02","æ­»äº¡"),
+		new Tanpo("S01","å‚·å®³","02","å¾Œéº"),
+		new Tanpo("S01","å‚·å®³","03","æ­»äº¡"),
+		new Tanpo("S01","å‚·å®³","03","å¾Œéº"));
 		
 		Collections.addAll(zokusei,
-		new Zokusei("S01","ŠQ","01","€–S","•ÛŒ¯—¿","100"),
-		new Zokusei("S01","ŠQ","02","€–S","•ÛŒ¯—¿","100"),
-		new Zokusei("S01","ŠQ","02","Œãˆâ","•ÛŒ¯—¿","100"),
-		new Zokusei("S01","ŠQ","03","€–S","•ÛŒ¯—¿","100"),
-		new Zokusei("S01","ŠQ","03","Œãˆâ","•ÛŒ¯—¿","100"));	
+		new Zokusei("S01","å‚·å®³","01","æ­»äº¡","ä¿é™ºæ–™","100"),
+		new Zokusei("S01","å‚·å®³","02","æ­»äº¡","ä¿é™ºæ–™","100"),
+		new Zokusei("S01","å‚·å®³","02","å¾Œéº","ä¿é™ºæ–™","100"),
+		new Zokusei("S01","å‚·å®³","03","æ­»äº¡","ä¿é™ºæ–™","100"),
+		new Zokusei("S01","å‚·å®³","03","å¾Œéº","ä¿é™ºæ–™","100"));	
 	}
 	
 	@Test
@@ -50,13 +50,13 @@ public class LamdaTest {
 		tanpo.stream().forEach( i -> a.put(i.getShoban()+i.getShumoku()+i.getMeisai()+i.getTanpo(), i) );
 		System.out.println(a);
 		
-		//map‚Æcollect‚ğ—˜—p‚µ‚½Œ`®B‚È‚ºƒLƒƒƒXƒg‚ª•K—v‚©‚í‚©‚ç‚È‚¢
+		//mapã¨collectã‚’åˆ©ç”¨ã—ãŸå½¢å¼ã€‚ãªãœã‚­ãƒ£ã‚¹ãƒˆãŒå¿…è¦ã‹ã‚ã‹ã‚‰ãªã„
 		HashMap<String,Tanpo> b =     (HashMap<String, Tanpo>) tanpo.stream()
 				//.map( i -> new AbstractMap.SimpleEntry<String,Tanpo>(i.getShoban()+i.getShumoku()+i.getMeisai()+i.getTanpo(),i))
 				.collect(Collectors.toMap(i -> i.getShoban()+i.getShumoku()+i.getMeisai()+i.getTanpo(), i -> i));
 		System.out.println(b);
 		
-		//Collectors.groupingBy‚ğg‚Á‚½Œ`®B‚È‚ºƒLƒƒƒXƒg‚ª•K—vH
+		//Collectors.groupingByã‚’ä½¿ã£ãŸå½¢å¼ã€‚ãªãœã‚­ãƒ£ã‚¹ãƒˆãŒå¿…è¦ï¼Ÿ
 		HashMap<String,List<Tanpo>> c = (HashMap<String, List<Tanpo>>) tanpo.stream()
 				.collect( Collectors.groupingBy(i -> i.getShoban()+i.getShumoku()+i.getMeisai()+i.getTanpo()) );
 		System.out.println(c);
@@ -81,13 +81,13 @@ public class LamdaTest {
 		LamdaFactory.createLamda(Search01.class).run();
 	}
 	
-	//ƒ‰ƒ€ƒ_‚ªQÆ‚·‚é•Ï”‚ÌƒXƒR[ƒv(•Ï”‚ğg‚¦‚é”ÍˆÍ)‚ÍAƒ‰ƒ€ƒ_‚ğ’è‹`‚µ‚½ƒNƒ‰ƒX‚âƒƒ\ƒbƒh‚Æ“¯‚¶‚É‚È‚éB
+	//ãƒ©ãƒ ãƒ€ãŒå‚ç…§ã™ã‚‹å¤‰æ•°ã®ã‚¹ã‚³ãƒ¼ãƒ—(å¤‰æ•°ã‚’ä½¿ãˆã‚‹ç¯„å›²)ã¯ã€ãƒ©ãƒ ãƒ€ã‚’å®šç¾©ã—ãŸã‚¯ãƒ©ã‚¹ã‚„ãƒ¡ã‚½ãƒƒãƒ‰ã¨åŒã˜ã«ãªã‚‹ã€‚
 	//
-	public Runnable lamdaScope(int round){ //ˆø”‚àƒ‰ƒ€ƒ_‚ÅQÆ‰Â”\
-		int trial = round + 1; // ƒ[ƒJƒ‹•Ï”‚àƒ‰ƒ€ƒ_‚ÅQÆ‰Â”\
+	public Runnable lamdaScope(int round){ //å¼•æ•°ã‚‚ãƒ©ãƒ ãƒ€ã§å‚ç…§å¯èƒ½
+		int trial = round + 1; // ãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ•°ã‚‚ãƒ©ãƒ ãƒ€ã§å‚ç…§å¯èƒ½
 		Runnable runner = () ->{
 			//
-			tanpo.add(new Tanpo("S01","ŠQ","01","€–S") ); //e‚ÌƒCƒ“ƒXƒ^ƒ“ƒX•Ï”‚àQÆ‰Â”\BƒNƒ‰ƒXŒ^‚Ì“à•”‚Ì•ÏX‚È‚ç‰Â
+			tanpo.add(new Tanpo("S01","å‚·å®³","01","æ­»äº¡") ); //è¦ªã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å¤‰æ•°ã‚‚å‚ç…§å¯èƒ½ã€‚ã‚¯ãƒ©ã‚¹å‹ã®å†…éƒ¨ã®å¤‰æ›´ãªã‚‰å¯
 			System.out.println(round + " " + trial + " " + tanpo);
 		};
 		return runner;
