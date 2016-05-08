@@ -3,8 +3,11 @@
  1. LambdaAbbreviation.java
    * ラムダの省略記法のテストです
  2. LambdaInterface.java
-   * 関数型いtんたフェースのテストです
- 3. 
+   * 関数型インタフェースを自作する
+ 3. LambdaScope.java
+ 　　*  ラムダからアクセスできるラムダの外側の変数は、ラムダの状態として紐づけられている
+ 4. LambdaScopeShadowing.java
+   * ラムダは匿名クラスと違って、自分の名前空間を持たない。
 
 
 ## ラムダとは
@@ -20,42 +23,72 @@
    * そこで、Javaでは、コードのみを疑似的に扱うために、抽象メソッドを一つもつインタフェースの実装で関数を表す
    * Javaのラムダは、Javaの匿名クラスのオブジェクトの一種として扱われ、その原理・原則に従いつつ、”メソッド１つだけ持つインタフェースの実装”を完結に表現する方法を提供する
    
- ## ラムダに近いもの
+## ラムダに近いもの
   * 匿名クラス
   * Callbackイディオム --- 細部のロジックだけ実装し、それをどう呼び出すかはフレームワークに任せる
   * Commandパターン Observerパターン Strategyパターン Template MethodパターンとFactoryメソッドの組み合わせ
   * Internal Iteration(Iteratorパターン)から External Iteration（ストリーム）へ
   
 ## ラムダの使いどころ
-  * 匿名クラスで使うところはなんでもオッケー
-  * 匿名クラスの使いどころ
+  * 匿名クラスの使いどころとおなじ。そもそもラムダでできることは匿名クラスでもできる
     * RunnableやFutureなど、マルチスレッド化・非同期化
+  * ラムダは匿名クラスよりも簡潔に書けるので、1行だけの簡単なコードも躊躇なく使える
+    * 単純計算もラムダで定義して、ストリームAPIに渡す。ストリームAPIによって並列処理化できる。
    
 ## Link
-  *
+  * まとめがよい
+    * http://www.ne.jp/asahi/hishidama/home/tech/java/functionalinterface.html
     * http://d.hatena.ne.jp/nowokay/20130824
-  * 
+  * 型推論の説明が良い。ページ下部の「ステップバイステップで学ぶラムダ式・ストリームAPI」はわかりやすい
     * http://masatoshitada.hatenadiary.jp/entry/2015/02/09/190150
-  * ラムダがCommandパターンなどを言語的にサポートできるようになった
+  * ラムダが導入されることと、デザインパターンとの関係を説明している：Commandパターンなどを言語的にサポートできるようになった
     * https://codezine.jp/article/detail/8300
+  * Lambda FAQ - Maurice NaftalinというフリーランスのJavaアーキテクトが手掛けるFAQ
+    * http://www.lambdafaq.org/
+  * State of the Lambda - Brian GoetzによるJavaのラムダ式の草案
+    * (原文) http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-final.html
+    * (翻訳) http://bitterfox.web.fc2.com/java/jsr/jsr335/lambda-state-4-JP.html
+    * (2012年11月 旧版) http://cr.openjdk.java.net/~briangoetz/lambda/sotc3.html
   * Oracleのチュートリアル　
     * http://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html
-  
+    * http://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html
+  * Java8 言語仕様 ラムダの部分
+    * http://docs.oracle.com/javase/specs/jls/se8/html/jls-15.html#jls-15.27
+  * Stack Over Flow - What are the advantages of Lambda Expressions for multicore systems?
+    * http://stackoverflow.com/questions/16981796/what-are-the-advantages-of-lambda-expressions-for-multicore-systems
+  * Oracleの記事　Java8のリリース前の記事なので正確でない可能性があるが、ラムダ導入の目的やいきさつがわかる
+    * http://www.oracle.com/technetwork/jp/articles/java/architect-lambdas-part1-2080972-ja.html
+    * http://www.oracle.com/technetwork/jp/articles/java/architect-lambdas-part2-2081439-ja.html
+  * ラムダとinvokedynamicやメソッドハンドルの関係を説明している
+    * http://www.infoq.com/jp/articles/Java-7-Features-Which-Enable-Java-8
+    
 ## 関数型プログラミングとは何かを考える
   * 関数型プログラミング = コードブロックをオブジェクトとみなす
   * オブジェクト指向プログラミング = コードとデータをセットでオブジェクトとみなす
   * 関数は、入力が定まると出力が定まるもの。オブジェクトは、状態と入力が決まると出力が定まるもの
-  * ラムダに与える入力が一意に決まると出力が決まるか？NO.レキシカルスコープといって、ラムダを定義したメソッドやクラスが持つ変数の状態をひきずっている。
+  * ラムダに与える入力が一意に決まると出力が決まるか？NO.Javaのラムダはクロージャの性質を持っていて、ラムダを定義したメソッドやクラスが持つ変数の状態をひきずっている。
+  * Javaではラムダとクロージャは同じ意味で使われる。ただし、厳密にはラムダは「名前を持たない関数」という意味を持ち、クロージャは「関数の外側で定義された変数の状態をもつ」という意味を持つ。
+    * http://www.lambdafaq.org/lambdas-and-closures-whats-the-difference/
 
-## ラムダ式を成立させる要素：　省略書式、関数型インタフェース、型推論、レキシカルスコープ、
+## Javaでラムダ式を成立させる要素：　省略書式、関数型インタフェース、型推論、クロージャ
+  * 省略書式
+    * (型 ラムダ引数) -> {ラムダ本体;};
+    * (ラムダ引数) -> {ラムダ本体;};
+    * ラムダ引数 -> {ラムダ本体;};
+    * ラムダ引数 -> ラムダ本体;
+  * 関数型インタフェース
+    * 定義されている抽象メソッドが１つだけあるインタフェース
+    * staticメソッドやデフォルトメソッド、Objectクラスにあるpublicメソッドは定義されていてもオッケー
   * 型推論
     * ラムダの代入文の左辺の型から推測することで、右辺の記述（クラス名、引数型名、リターンコード）を削減することに成功している
     * ラムダの代入文なら左辺を見れば目で終えるが、ラムダをメソッドの引数として渡すときは、そのメソッドの定義までたどる必要がある。
     * ストリームAPIで何段ものメソッドチェーンを組み立てると、推論の根拠がどこにあるのか目で追えなくなる。ここがラムダが可読性に問題があるといわれる理由の一つ。
     * ラムダ式は何クラスのインスタンスとして扱われるか？　（答）定義したときの左辺の型によって異なり、コンパイラが決める
     * http://masatoshitada.hatenadiary.jp/entry/2015/02/09/190150
-
-  
+  * クロージャ
+    * ラムダは、外側で定義された変数を、状態としてもつ。その変数をCaptured Variableという。下のページのセクション７を参照。
+    * http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-final.html
+    
 ## ラムダと匿名クラスの機能的な違い
   * 以下以外、機能的に、違いはない
   * this が表すもの
@@ -76,7 +109,7 @@
   * Callable.call() --- 引数無しで実行し、戻り値はVoid以外。並列処理を実装するためのものだが、関数型インタフェースの条件を満たしている。
   * http://www.ne.jp/asahi/hishidama/home/tech/java/functionalinterface.html
 
- * メソッド参照
-  * 既に定義されているメソッドをラムダとして切り出すことができる
+## メソッド参照
+  * 既に定義されているメソッドをラムダとして切り出してラムダとして使える
   
 
