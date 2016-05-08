@@ -5,7 +5,7 @@
  2. LambdaInterface.java
    * 関数型インタフェースを自作する
  3. LambdaScope.java
- 　　*  ラムダからアクセスできるラムダの外側の変数は、ラムダの状態として紐づけられている
+   *  ラムダからアクセスできるラムダの外側の変数は、ラムダの状態として紐づけられている
  4. LambdaScopeShadowing.java
    * ラムダは匿名クラスと違って、自分の名前空間を持たない。
 
@@ -39,7 +39,7 @@
   * まとめがよい
     * http://www.ne.jp/asahi/hishidama/home/tech/java/functionalinterface.html
     * http://d.hatena.ne.jp/nowokay/20130824
-  * 型推論の説明が良い。ページ下部の「ステップバイステップで学ぶラムダ式・ストリームAPI」はわかりやすい
+  * こちらもわかりやすい。型推論の説明が良い。ページ下部の「ステップバイステップで学ぶラムダ式・ストリームAPI」はわかりやすい
     * http://masatoshitada.hatenadiary.jp/entry/2015/02/09/190150
   * ラムダが導入されることと、デザインパターンとの関係を説明している：Commandパターンなどを言語的にサポートできるようになった
     * https://codezine.jp/article/detail/8300
@@ -111,5 +111,6 @@
 
 ## メソッド参照
   * 既に定義されているメソッドをラムダとして切り出してラムダとして使える
-  
+  * http://www.ne.jp/asahi/hishidama/home/tech/java/methodreference.html
+  * http://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html
 
