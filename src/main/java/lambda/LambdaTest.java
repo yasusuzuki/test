@@ -1,22 +1,20 @@
-﻿package lamda;
-import java.util.AbstractMap;
-import java.util.AbstractMap.SimpleEntry;
+﻿package lambda;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import lamda.reflectiontarget.Search01;
+import lambda.domain.Meisai;
+import lambda.domain.Tanpo;
+import lambda.domain.Zokusei;
+import lambda.reflectiontarget.Search01;
 
-public class LamdaTest {
+public class LambdaTest {
 	ArrayList<Meisai> meisai = new ArrayList<Meisai>();
 	ArrayList<Tanpo> tanpo = new ArrayList<Tanpo>();
 	ArrayList<Zokusei> zokusei = new ArrayList<Zokusei>();
@@ -75,15 +73,15 @@ public class LamdaTest {
 	public void test2() {
 		System.out.println(" *** Run test2 ***");
 
-		lamdaScope(100).run();
-		lamdaScope(200).run();
+		lambdaScope(100).run();
+		lambdaScope(200).run();
 		
-		LamdaFactory.createLamda(Search01.class).run();
+		LambdaFactory.createLambda(Search01.class).run();
 	}
 	
 	//ラムダが参照する変数のスコープ(変数を使える範囲)は、ラムダを定義したクラスやメソッドと同じになる。
 	//
-	public Runnable lamdaScope(int round){ //引数もラムダで参照可能
+	public Runnable lambdaScope(int round){ //引数もラムダで参照可能
 		int trial = round + 1; // ローカル変数もラムダで参照可能
 		Runnable runner = () ->{
 			//

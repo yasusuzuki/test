@@ -1,4 +1,4 @@
-package lamda;
+package lambda;
 
 public class StreamTest {
 

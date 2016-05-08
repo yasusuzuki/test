@@ -1,4 +1,4 @@
-package lamda.reflectiontarget;
+package lambda.reflectiontarget;
 
 public class Search01 implements SearchAbstract{
 

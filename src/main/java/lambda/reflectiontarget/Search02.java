@@ -1,4 +1,4 @@
-package lamda.reflectiontarget;
+package lambda.reflectiontarget;
 
 public class Search02 implements SearchAbstract{
 	@Override

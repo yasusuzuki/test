@@ -1,15 +1,13 @@
-﻿package lamda;
+﻿package lambda;
 
-import java.util.function.Consumer;
+import lambda.reflectiontarget.SearchAbstract;
 
-import lamda.reflectiontarget.SearchAbstract;
-
-public class LamdaFactory {
+public class LambdaFactory {
 	//ラムダからクラス変数にアクセスできる。
 	private static String class_instance_var = "AA";
 	
 	//アプリ初期化時にすべてラムダを作成・登録をして、実行は後で。
-	public static <T extends SearchAbstract> Runnable createLamda(Class<T> searchClass) {
+	public static <T extends SearchAbstract> Runnable createLambda(Class<T> searchClass) {
 		int out_lamda = 100; // ローカル変数もラムダで参照可能
 		//Runnableはスレッドを作るときと同じだが、new Thread(Runnable runner)をしないので
 		//新しいスレッドは作成されない

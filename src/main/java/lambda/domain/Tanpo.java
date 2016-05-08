@@ -1,15 +1,21 @@
-package lamda;
+package lambda.domain;
 
-public class Meisai {
+public class Tanpo {
 	private String shoban;
 	private String shumoku;
 	private String meisai;
-	public Meisai(String shoban, String shumoku, String meisai) {
+	private String tanpo;
+	
+	
+	public Tanpo(String shoban, String shumoku, String meisai, String tanpo) {
 		super();
 		this.shoban = shoban;
 		this.shumoku = shumoku;
 		this.meisai = meisai;
+		this.tanpo = tanpo;
 	}
+	
+	
 	public String getShoban() {
 		return shoban;
 	}
@@ -28,5 +34,11 @@ public class Meisai {
 	public void setMeisai(String meisai) {
 		this.meisai = meisai;
 	}
-
+	public String getTanpo() {
+		return tanpo;
+	}
+	public void setTanpo(String tanpo) {
+		this.tanpo = tanpo;
+	}
+	
 }

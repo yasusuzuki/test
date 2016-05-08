@@ -1,21 +1,21 @@
-package lamda;
+package lambda.domain;
 
-public class Tanpo {
+public class Zokusei {
 	private String shoban;
 	private String shumoku;
 	private String meisai;
 	private String tanpo;
-	
-	
-	public Tanpo(String shoban, String shumoku, String meisai, String tanpo) {
+	private String zokusei;
+	private String value;
+	public Zokusei(String shoban, String shumoku, String meisai, String tanpo, String zokusei, String value) {
 		super();
 		this.shoban = shoban;
 		this.shumoku = shumoku;
 		this.meisai = meisai;
 		this.tanpo = tanpo;
+		this.zokusei = zokusei;
+		this.value = value;
 	}
-	
-	
 	public String getShoban() {
 		return shoban;
 	}
@@ -39,6 +39,18 @@ public class Tanpo {
 	}
 	public void setTanpo(String tanpo) {
 		this.tanpo = tanpo;
+	}
+	public String getZokusei() {
+		return zokusei;
+	}
+	public void setZokusei(String zokusei) {
+		this.zokusei = zokusei;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
 	}
 	
 }
