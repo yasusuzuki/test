@@ -85,6 +85,7 @@
     * ストリームAPIで何段ものメソッドチェーンを組み立てると、推論の根拠がどこにあるのか目で追えなくなる。ここがラムダが可読性に問題があるといわれる理由の一つ。
     * ラムダ式は何クラスのインスタンスとして扱われるか？　（答）定義したときの左辺の型によって異なり、コンパイラが決める
     * http://masatoshitada.hatenadiary.jp/entry/2015/02/09/190150
+    * ただし、この型推論はコンパイラが実施するもの。VMが動的に実施しているものではないので、ソースコードを見れば人間でも一意に判断できるもの。＜－難しくない。
   * クロージャ
     * ラムダは、外側で定義された変数を、状態としてもつ。その変数をCaptured Variableという。下のページのセクション７を参照。
     * http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-final.html
@@ -114,3 +115,24 @@
   * http://www.ne.jp/asahi/hishidama/home/tech/java/methodreference.html
   * http://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html
 
+## ストリーム
+  * 生成操作
+    * Stream<String> stream = list.stream(); ( where list = ArrayList<String> )
+    * Stream<String> stream = Stream.of("a","b","c");
+    * Stream<String> stream = Array.stream(strings); (where string = String[])
+    * Stream.generate(); IntStream.range(1,10);
+  * 中間操作（ストリームを受け取り、別のストリームを作成する）
+    * Stream<T> filter(Predicate<T> applies); //ストリームの要素から条件で絞る
+    * Stream<R> map(Function<T,R> mapper);  //ストリームの要素を変換する
+    * sorted(); flatMap();distinct();limit();skip();keep();
+  * 終端操作(ストリームを受け取り、コレクションを作成する)
+    * collect(Collectors.toList())
+    * collect(Collectors.toMap(マップのキー、マップの値));
+    * collect(Collectors.groupingBy(マップのキー));
+    * reduce();
+    * count();
+    * max(); min();
+    * allMatch(); anyMatch(); noneMatch();
+    * findFirst(); findAny();
+    
+    
