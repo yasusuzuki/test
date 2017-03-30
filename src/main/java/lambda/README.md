@@ -125,7 +125,8 @@
     * Stream<String> stream = list.stream(); ( where list = ArrayList<String> )
     * Stream<String> stream = Stream.of("a","b","c");
     * Stream<String> stream = Array.stream(strings); (where string = String[])
-    * Stream.generate(); IntStream.range(1,10);
+    * Stream.generate();  //無限にループするストリームの生成
+    * IntStream.range(1,10); //1から10まで繰り返すストリームの生成
   * 中間操作（ストリームを受け取り、別のストリームを作成する）
     * Stream<T> filter(Predicate<T> applies); //ストリームの要素から条件で絞る
     * Stream<R> map(Function<T,R> mapper);  //ストリームの要素を変換する
@@ -134,8 +135,8 @@
     * collect(Collectors.toList())
     * collect(Collectors.toMap(マップのキー、マップの値));
     * collect(Collectors.groupingBy(マップのキー));
-    * reduce();
-    * count();
+    * reduce(); // reduce( (total,value) -> total = total+value )として、  ストリームの各要素の総計を求めれる
+    * count();
     * max(); min();
     * allMatch(); anyMatch(); noneMatch();
     * findFirst(); findAny();
