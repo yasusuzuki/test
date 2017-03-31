@@ -44,6 +44,7 @@
   * まとめがよい
     * http://www.ne.jp/asahi/hishidama/home/tech/java/functionalinterface.html
     * http://d.hatena.ne.jp/nowokay/20130824
+    * http://qiita.com/tasogarei/items/60b5e55d8f42732686c6
   * こちらもわかりやすい。型推論の説明が良い。ページ下部の「ステップバイステップで学ぶラムダ式・ストリームAPI」はわかりやすい
     * http://masatoshitada.hatenadiary.jp/entry/2015/02/09/190150
   * ラムダが導入されることと、デザインパターンとの関係を説明している：Commandパターンなどを言語的にサポートできるようになった
