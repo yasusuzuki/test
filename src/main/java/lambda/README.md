@@ -67,7 +67,7 @@
     * http://www.oracle.com/technetwork/jp/articles/java/architect-lambdas-part2-2081439-ja.html
   * ラムダとinvokedynamicやメソッドハンドルの関係を説明している
     * http://www.infoq.com/jp/articles/Java-7-Features-Which-Enable-Java-8
-  * ラムダのデメリット　ラムダは使用すべきではない
+  * ラムダのデメリット　ラムダは使用すべきではない
     * https://stackoverflow.com/questions/16635398/java-8-iterable-foreach-vs-foreach-loop
     
 ## 関数型プログラミングとは何かを考える
