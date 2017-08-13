@@ -145,8 +145,8 @@
     * findFirst(); findAny();
  
 ## ラムダを使用してはいけないという主張
-  * ラムダは例外処理を外側に向けて投げられない。これは関数型インタフェースが、どれも、例外を投げないように設計されているから。例：Function.apply()
-    * http://acro-engineer.hatenablog.com/entry/2014/04/15/121503
+  * ラムダは検査例外を外側に向けて投げられない。これは関数型インタフェースが、どれも、例外を投げないように設計されているから。例：Function.apply()。これが問題になる。
+    * http://acro-engineer.hatenablog.com/entry/2014/04/15/121503
     * https://docs.oracle.com/javase/jp/8/docs/api/java/util/function/Function.html
     * ラムダ内で検査例外が発生する場合、ラムダの中でキャッチしなければいけない
   * ラムダ内で例外は発生させないか、発生しても外側に投げない
