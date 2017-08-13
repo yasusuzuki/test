@@ -44,6 +44,7 @@
   * まとめがよい
     * http://www.ne.jp/asahi/hishidama/home/tech/java/functionalinterface.html
     * http://d.hatena.ne.jp/nowokay/20130824
+    * http://qiita.com/tasogarei/items/60b5e55d8f42732686c6
   * こちらもわかりやすい。型推論の説明が良い。ページ下部の「ステップバイステップで学ぶラムダ式・ストリームAPI」はわかりやすい
     * http://masatoshitada.hatenadiary.jp/entry/2015/02/09/190150
   * ラムダが導入されることと、デザインパターンとの関係を説明している：Commandパターンなどを言語的にサポートできるようになった
@@ -66,6 +67,8 @@
     * http://www.oracle.com/technetwork/jp/articles/java/architect-lambdas-part2-2081439-ja.html
   * ラムダとinvokedynamicやメソッドハンドルの関係を説明している
     * http://www.infoq.com/jp/articles/Java-7-Features-Which-Enable-Java-8
+  * ラムダのデメリット　ラムダは使用すべきではない
+    * https://stackoverflow.com/questions/16635398/java-8-iterable-foreach-vs-foreach-loop
     
 ## 関数型プログラミングとは何かを考える
   * 関数型プログラミング = コードブロックをオブジェクトとみなす
@@ -125,7 +128,8 @@
     * Stream<String> stream = list.stream(); ( where list = ArrayList<String> )
     * Stream<String> stream = Stream.of("a","b","c");
     * Stream<String> stream = Array.stream(strings); (where string = String[])
-    * Stream.generate(); IntStream.range(1,10);
+    * Stream.generate();  //無限にループするストリームの生成
+    * IntStream.range(1,10); //1から10まで繰り返すストリームの生成
   * 中間操作（ストリームを受け取り、別のストリームを作成する）
     * Stream<T> filter(Predicate<T> applies); //ストリームの要素から条件で絞る
     * Stream<R> map(Function<T,R> mapper);  //ストリームの要素を変換する
@@ -134,10 +138,21 @@
     * collect(Collectors.toList())
     * collect(Collectors.toMap(マップのキー、マップの値));
     * collect(Collectors.groupingBy(マップのキー));
-    * reduce();
-    * count();
+    * reduce(); // reduce( (total,value) -> total = total+value )として、  ストリームの各要素の総計を求めれる
+    * count();
     * max(); min();
     * allMatch(); anyMatch(); noneMatch();
     * findFirst(); findAny();
-    
-    
+ 
+## ラムダを使用してはいけないという主張
+  * ラムダは検査例外を外側に向けて投げられない。これは関数型インタフェースが、どれも、例外を投げないように設計されているから。例：Function.apply()。これが問題になる。
+    * http://acro-engineer.hatenablog.com/entry/2014/04/15/121503
+    * https://docs.oracle.com/javase/jp/8/docs/api/java/util/function/Function.html
+    * ラムダ内で検査例外が発生する場合、ラムダの中でキャッチしなければいけない
+  * ラムダ内で例外は発生させないか、発生しても外側に投げない
+    * http://acro-engineer.hatenablog.com/entry/2014/05/02/112819
+  * 例外をキャッチするラムダのラッパーを作成するというテクニックがある。
+    * http://qiita.com/q-ikawa/items/3f55089e9081e1a854bc
+    * https://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams/
+  * Streamを使用するのとforeachを使う場合の比較
+    * https://stackoverflow.com/questions/16635398/java-8-iterable-foreach-vs-foreach-loop

@@ -1,5 +1,8 @@
 package ocjp_silver8;
+
+
 public class ClassCastTest {
+
 	class A {
 		
 	}
@@ -15,6 +18,10 @@ public class ClassCastTest {
 		
 		b = new B();
 		//C c = (C)b;  //B型の変数bはそもそもC型とはなんの縁もないのでコンパイルエラー
+	}
+	
+	public static void main(String[] args) {
+		new ClassCastTest().test();
 	}
 
 }
