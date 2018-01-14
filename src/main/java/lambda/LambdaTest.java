@@ -1,4 +1,4 @@
-﻿package lambda;
+package lambda;
 
 import lambda.reflectiontarget.Search01;
 
