@@ -3,4 +3,10 @@
   <groupId>labo</groupId>
   <artifactId>java_lang_test</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+      <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+
+    </properties>
 </project>
