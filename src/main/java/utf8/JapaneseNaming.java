@@ -1,4 +1,4 @@
-﻿package utf8;
+package utf8;
 
 public class JapaneseNaming {
 	private String テスト文字列 = "テスト文字列";
